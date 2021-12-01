@@ -1,7 +1,14 @@
-import { ActionFunction, Form, redirect } from "remix";
+import { ActionFunction, Form, MetaFunction, redirect } from "remix";
 import { authenticator } from "~/services/auth.server";
 import { collectedNotes } from "~/services/cn.server";
 import { commitSession, getSession } from "~/services/session.server";
+
+export let meta: MetaFunction = () => {
+  return {
+    title: "Sign in to Collected Notes",
+    description: "Your Markdown notes on the internet",
+  };
+};
 
 export let action: ActionFunction = async ({ request }) => {
   let auth = await authenticator.authenticate("local", request, {

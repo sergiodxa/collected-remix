@@ -1,7 +1,14 @@
 import NProgress from "nprogress";
 import nProgressStyles from "nprogress/nprogress.css";
 import { useEffect } from "react";
-import { Link, LinksFunction, Outlet, useCatch, useTransition } from "remix";
+import {
+  Link,
+  LinksFunction,
+  MetaFunction,
+  Outlet,
+  useCatch,
+  useTransition,
+} from "remix";
 import { Document } from "~/components/document";
 import tailwindUrl from "~/styles/tailwind.css";
 
@@ -10,6 +17,13 @@ export let links: LinksFunction = () => {
     { rel: "stylesheet", href: tailwindUrl },
     { rel: "stylesheet", href: nProgressStyles },
   ];
+};
+
+export let meta: MetaFunction = () => {
+  return {
+    title: "Collected Notes",
+    description: "Your Markdown notes on the internet",
+  };
 };
 
 export default function App() {

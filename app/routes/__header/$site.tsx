@@ -1,5 +1,5 @@
 import { differenceInCalendarDays, formatDistanceToNow } from "date-fns";
-import { Link, LoaderFunction, useLoaderData } from "remix";
+import { Link, LoaderFunction, MetaFunction, useLoaderData } from "remix";
 import { json, notFound } from "remix-utils";
 import invariant from "tiny-invariant";
 import { Note, Site, site } from "~/services/cn.server";
@@ -8,6 +8,14 @@ type LoaderData = {
   site: Site;
   notes: Note[];
   page: number;
+};
+
+export let meta: MetaFunction = ({ data }) => {
+  let { site } = data as LoaderData;
+  return {
+    title: site.name,
+    description: site.headline,
+  };
 };
 
 export let loader: LoaderFunction = async ({ request, params }) => {
