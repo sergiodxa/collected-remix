@@ -1,16 +1,29 @@
+import i18next from "i18next";
 import NProgress from "nprogress";
 import nProgressStyles from "nprogress/nprogress.css";
 import { useEffect } from "react";
 import {
   Link,
   LinksFunction,
+  LoaderFunction,
   MetaFunction,
   Outlet,
   useCatch,
+  useLoaderData,
   useTransition,
 } from "remix";
+import { Language, useRemixI18Next } from "remix-i18next";
+import { json } from "remix-utils";
 import { Document } from "~/components/document";
 import tailwindUrl from "~/styles/tailwind.css";
+import { cookie, i18n } from "./services/i18n.server";
+import { init } from "./services/i18next";
+
+type LoaderData = {
+  locale: string;
+  i18n: Language;
+  description: string;
+};
 
 export let links: LinksFunction = () => {
   return [
@@ -19,14 +32,30 @@ export let links: LinksFunction = () => {
   ];
 };
 
-export let meta: MetaFunction = () => {
-  return {
-    title: "Collected Notes",
-    description: "Your Markdown notes on the internet",
-  };
+export let meta: MetaFunction = ({ data }) => {
+  let { description } = data as LoaderData;
+  return { title: "Collected Notes", description };
+};
+
+export let loader: LoaderFunction = async ({ request }) => {
+  let locale = await i18n.getLocale(request);
+
+  let translations = await i18n.getTranslations(request, "common");
+  let t = await init();
+  i18next.addResourceBundle("en", "common", translations.common);
+
+  let description = t("Your Markdown notes on the internet");
+
+  return json<LoaderData>(
+    { locale, i18n: translations, description },
+    { headers: { "Set-Cookie": await cookie.serialize(locale) } }
+  );
 };
 
 export default function App() {
+  let { locale } = useLoaderData<{ locale: string }>();
+  useRemixI18Next(locale);
+
   let transition = useTransition();
   useEffect(() => {
     if (transition.state === "idle") NProgress.done();

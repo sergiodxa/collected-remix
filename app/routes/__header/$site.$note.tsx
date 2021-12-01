@@ -40,6 +40,7 @@ export let loader: LoaderFunction = async ({ params }) => {
 
 export default function Screen() {
   let { html } = useLoaderData<LoaderData>();
+
   return (
     <div className="relative py-16 bg-white overflow-hidden">
       <div className="hidden lg:block lg:absolute lg:inset-y-0 lg:h-full lg:w-full">

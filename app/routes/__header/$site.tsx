@@ -1,4 +1,5 @@
 import { differenceInCalendarDays, formatDistanceToNow } from "date-fns";
+import { useTranslation } from "react-i18next";
 import { Link, LoaderFunction, MetaFunction, useLoaderData } from "remix";
 import { json, notFound } from "remix-utils";
 import invariant from "tiny-invariant";
@@ -48,6 +49,7 @@ export let loader: LoaderFunction = async ({ request, params }) => {
 
 export default function Screen() {
   let { site, notes, page } = useLoaderData<LoaderData>();
+  let { t } = useTranslation();
   return (
     <>
       <main className="bg-white pt-16 pb-20 px-4 sm:px-6 lg:pt-24 lg:pb-28 lg:px-8">
@@ -84,7 +86,7 @@ export default function Screen() {
                     prefetch="intent"
                     className="text-base font-semibold text-indigo-600 hover:text-indigo-500"
                   >
-                    Read full story
+                    {t("Read full story")}
                   </Link>
                 </div>
               </div>
@@ -102,13 +104,13 @@ export default function Screen() {
             to={`?page=${page - 1}`}
             className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
           >
-            Previous
+            {t("Previous")}
           </Link>
           <Link
             to={`?page=${page + 1}`}
             className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
           >
-            Next
+            {t("Next")}
           </Link>
         </div>
       </nav>
