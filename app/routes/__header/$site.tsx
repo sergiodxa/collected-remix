@@ -41,7 +41,7 @@ export let loader: LoaderFunction = async ({ request, params }) => {
       else headers.set("Cache-Control", "public, max-age=3600");
     }
 
-    return json<LoaderData>({ ...data, page });
+    return json<LoaderData>({ ...data, page }, { headers });
   } catch {
     throw notFound({});
   }
